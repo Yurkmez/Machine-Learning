@@ -5,7 +5,7 @@ df = pd.read_csv('./data/tips.csv')
 #  False - сортировка по убыванию
 # print(df.sort_values('tip', ascending=True))
 # print(df.sort_values(['tip', 'sex'], ascending=True))
-# print(df['tip'].max())
+# print(df['tip'])
 # aaa = df['tip'].idxmax()
 # print(df.iloc[aaa])
 # print(df.corr(numeric_only=True))
@@ -26,6 +26,6 @@ df = pd.read_csv('./data/tips.csv')
 # print(df.nsmallest(5, 'tip'))
 # Получение случайных данных
 # print(df.sample(5))
-print(df.sample(frac=0.02))
+# print(df.sample(frac=0.02))
 
 
