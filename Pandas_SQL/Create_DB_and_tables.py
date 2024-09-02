@@ -21,6 +21,9 @@ config = {
 DB_NAME = 'employees'
 
 TABLES = {}
+# "Чистый" синтаксис команды (т.е. при написании ее
+# в одну строчку) исключает все двойные кавычки("")
+# и 2 скобки - в начале (после =) и самом конце кода 
 TABLES['employees'] = (
     "CREATE TABLE `employees` ("
     "  `emp_no` int(11) NOT NULL AUTO_INCREMENT,"
@@ -39,15 +42,19 @@ TABLES['departments'] = (
     "  PRIMARY KEY (`dept_no`), UNIQUE KEY `dept_name` (`dept_name`)"
     ") ENGINE=InnoDB")
 
-TABLES['salaries'] = (
-    "CREATE TABLE `salaries` ("
+TABLES['dept_manager'] = (
+    "  CREATE TABLE `dept_manager` ("
     "  `emp_no` int(11) NOT NULL,"
-    "  `salary` int(11) NOT NULL,"
+    "  `dept_no` char(4) NOT NULL,"
     "  `from_date` date NOT NULL,"
     "  `to_date` date NOT NULL,"
-    "  PRIMARY KEY (`emp_no`,`from_date`), KEY `emp_no` (`emp_no`),"
-    "  CONSTRAINT `salaries_ibfk_1` FOREIGN KEY (`emp_no`) "
-    "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE"
+    "  PRIMARY KEY (`emp_no`,`dept_no`),"
+    "  KEY `emp_no` (`emp_no`),"
+    "  KEY `dept_no` (`dept_no`),"
+    "  CONSTRAINT `dept_manager_ibfk_1` FOREIGN KEY (`emp_no`) "
+    "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE,"
+    "  CONSTRAINT `dept_manager_ibfk_2` FOREIGN KEY (`dept_no`) "
+    "     REFERENCES `departments` (`dept_no`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")
 
 TABLES['dept_emp'] = (
@@ -64,21 +71,6 @@ TABLES['dept_emp'] = (
     "     REFERENCES `departments` (`dept_no`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")
 
-TABLES['dept_manager'] = (
-    "  CREATE TABLE `dept_manager` ("
-    "  `emp_no` int(11) NOT NULL,"
-    "  `dept_no` char(4) NOT NULL,"
-    "  `from_date` date NOT NULL,"
-    "  `to_date` date NOT NULL,"
-    "  PRIMARY KEY (`emp_no`,`dept_no`),"
-    "  KEY `emp_no` (`emp_no`),"
-    "  KEY `dept_no` (`dept_no`),"
-    "  CONSTRAINT `dept_manager_ibfk_1` FOREIGN KEY (`emp_no`) "
-    "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE,"
-    "  CONSTRAINT `dept_manager_ibfk_2` FOREIGN KEY (`dept_no`) "
-    "     REFERENCES `departments` (`dept_no`) ON DELETE CASCADE"
-    ") ENGINE=InnoDB")
-
 TABLES['titles'] = (
     "CREATE TABLE `titles` ("
     "  `emp_no` int(11) NOT NULL,"
@@ -89,6 +81,22 @@ TABLES['titles'] = (
     "  CONSTRAINT `titles_ibfk_1` FOREIGN KEY (`emp_no`)"
     "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")
+
+
+TABLES['salaries'] = (
+    "CREATE TABLE `salaries` ("
+    "  `emp_no` int(11) NOT NULL,"
+    "  `salary` int(11) NOT NULL,"
+    "  `from_date` date NOT NULL,"
+    "  `to_date` date NOT NULL,"
+    "  PRIMARY KEY (`emp_no`,`from_date`), KEY `emp_no` (`emp_no`),"
+    "  CONSTRAINT `salaries_ibfk_1` FOREIGN KEY (`emp_no`) "
+    "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE"
+    ") ENGINE=InnoDB")
+
+
+
+
 # for table_name in TABLES:
 #     table_description = TABLES[table_name]
 #     print(table_description)
@@ -106,6 +114,7 @@ TABLES['titles'] = (
 #     print(err)
 # else:
     # cnx.close()
+    
 # ____________________________________________________  
 cnx = mysql.connector.connect(**config)
 cursor = cnx.cursor()
@@ -138,10 +147,10 @@ except mysql.connector.Error as err:
 for table_name in TABLES:
     table_description = TABLES[table_name]
     try:
-        # Пытаемся создать таблицу
+        # Создаем таблицу
         print("Creating table {}: ".format(table_name), end='')
         cursor.execute(table_description)
-        # если она существет - сообщаем (не перезаписываем)
+        # если она существет - сообщаем (already exists) и не перезаписываем
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
             print("already exists.")
