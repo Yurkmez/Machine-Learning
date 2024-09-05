@@ -13,9 +13,8 @@ config = {
     'user': 'root',
     'password': 'Ledzeppelin_7777',
     'host': '127.0.0.1',
-    # 'database': 'sequel',
-}
-
+    # 'database': 'employees',
+    }
 # ___________________________________________
 
 DB_NAME = 'employees'
@@ -34,14 +33,12 @@ TABLES['employees'] = (
     "  `hire_date` date NOT NULL,"
     "  PRIMARY KEY (`emp_no`)"
     ") ENGINE=InnoDB")
-
 TABLES['departments'] = (
     "CREATE TABLE `departments` ("
     "  `dept_no` char(4) NOT NULL,"
     "  `dept_name` varchar(40) NOT NULL,"
     "  PRIMARY KEY (`dept_no`), UNIQUE KEY `dept_name` (`dept_name`)"
     ") ENGINE=InnoDB")
-
 TABLES['dept_manager'] = (
     "  CREATE TABLE `dept_manager` ("
     "  `emp_no` int(11) NOT NULL,"
@@ -56,7 +53,6 @@ TABLES['dept_manager'] = (
     "  CONSTRAINT `dept_manager_ibfk_2` FOREIGN KEY (`dept_no`) "
     "     REFERENCES `departments` (`dept_no`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")
-
 TABLES['dept_emp'] = (
     "CREATE TABLE `dept_emp` ("
     "  `emp_no` int(11) NOT NULL,"
@@ -70,7 +66,6 @@ TABLES['dept_emp'] = (
     "  CONSTRAINT `dept_emp_ibfk_2` FOREIGN KEY (`dept_no`) "
     "     REFERENCES `departments` (`dept_no`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")
-
 TABLES['titles'] = (
     "CREATE TABLE `titles` ("
     "  `emp_no` int(11) NOT NULL,"
@@ -81,8 +76,6 @@ TABLES['titles'] = (
     "  CONSTRAINT `titles_ibfk_1` FOREIGN KEY (`emp_no`)"
     "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")
-
-
 TABLES['salaries'] = (
     "CREATE TABLE `salaries` ("
     "  `emp_no` int(11) NOT NULL,"
@@ -93,32 +86,9 @@ TABLES['salaries'] = (
     "  CONSTRAINT `salaries_ibfk_1` FOREIGN KEY (`emp_no`) "
     "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE"
     ") ENGINE=InnoDB")
-
-
-
-
-# for table_name in TABLES:
-#     table_description = TABLES[table_name]
-#     print(table_description)
-# ___________________________________________
-
-# try:
-#     cnx = mysql.connector.connect(**config)
-#     cursor = cnx.cursor()
-# except mysql.connector.Error as err:
-#   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-#     print("Something is wrong with your user name or password")
-#   elif err.errno == errorcode.ER_BAD_DB_ERROR:
-#     print("Database does not exist")
-#   else:
-#     print(err)
-# else:
-    # cnx.close()
     
-# ____________________________________________________  
 cnx = mysql.connector.connect(**config)
 cursor = cnx.cursor()
-# ____________________________________________________
 # Ф-ция по созданию БД "employees"
 def create_database(cursor):
     try:
@@ -133,8 +103,7 @@ try:
     # Пытаемся обратиться к БД "employees"
     cursor.execute("USE {}".format(DB_NAME))
 except mysql.connector.Error as err:
-    # если ошибка, выводим сообщение и создаем ее 
-    # вызывая ф-цию create_database(...)
+    # если ошибка, выводим сообщение и создаем ее вызывая ф-цию create_database(...)
     print("Database {} does not exists.".format(DB_NAME))
     if err.errno == errorcode.ER_BAD_DB_ERROR:
         create_database(cursor)

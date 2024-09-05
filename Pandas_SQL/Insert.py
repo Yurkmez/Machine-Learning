@@ -3,24 +3,25 @@ from datetime import date, datetime, timedelta
 import mysql.connector
 # ___________________________________
 import Insert_data
-
+# __________________________
 config = {
-    'user': 'root',
-    'password': 'Ledzeppelin_7777',
-    'host': '127.0.0.1',
-    'database': 'employees',
-}
+        'user': 'root',
+        'password': 'Ledzeppelin_7777',
+        'host': '127.0.0.1',
+        'database': 'employees',
+    }
+
 cnx = mysql.connector.connect(**config)
 cursor = cnx.cursor()
 tomorrow = datetime.now().date() + timedelta(days=1)
 
 
-# Insert_data.departments()
-# Insert_data.employees()
-# Insert_data.dept_emp()
-# Insert_data.dept_manager()
-# Insert_data.titles()
-# Insert_data.salaries()
+Insert_data.departments()
+Insert_data.employees()
+Insert_data.dept_emp()
+Insert_data.dept_manager()
+Insert_data.titles()
+Insert_data.salaries()
 
 cursor.close()
 cnx.close()

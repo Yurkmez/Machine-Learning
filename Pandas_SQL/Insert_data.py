@@ -1,12 +1,15 @@
+# https://dev.mysql.com/doc/employee/en/employees-installation.html
 # https://github.com/datacharmer/test_db
 import mysql.connector
-
+# _____________________________
 config = {
-    'user': 'root',
-    'password': 'Ledzeppelin_7777',
-    'host': '127.0.0.1',
-    'database': 'employees',
-}
+        'user': 'root',
+        'password': 'Ledzeppelin_7777',
+        'host': '127.0.0.1',
+        'database': 'employees',
+    }
+# __________________________
+
 cnx = mysql.connector.connect(**config)
 cursor = cnx.cursor()
 
@@ -1457,5 +1460,4 @@ def salaries():
                "VALUES (%s, %s, %s, %s)")
     cursor.executemany(add_salaries, data_salaries)
     cnx.commit()
-    cnx.close()
     
