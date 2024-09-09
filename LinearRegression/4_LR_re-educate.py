@@ -82,4 +82,5 @@ compaiqn = [[149, 22, 12]]
 transformed_data = loaded_converter.fit_transform(compaiqn)
 
 resalt = loaded_model.predict(transformed_data)
-print(resalt)
+print(resalt) # [14.64501014], 
+# линейна регрессия дала 13.89
