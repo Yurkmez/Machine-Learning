@@ -1,0 +1,4 @@
+Как создать переменную среды и прописать путь
+
+(Win+X -> Y), перейти в раздел «Advancet system settings», 
+затем нажать «Environment Variables». Там все сделать
